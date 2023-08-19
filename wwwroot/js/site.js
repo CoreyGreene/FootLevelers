@@ -75,7 +75,7 @@ ShowCompletelyIrrelevantMessages = () => {
   }
 
   if (numberOfRequestsSent > 1000) {
-    ShowSpecialMessagesDialog("Yea, your're bored");
+    ShowSpecialMessagesDialog("Yea, you're bored");
   }
 };
 
