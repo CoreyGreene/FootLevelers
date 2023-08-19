@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">API Practice Test</h1>
+    <p>Hit the Button below to punish this poor API Enpoint</p>
+    <button id="apiButton" class="btn btn-primary" onclick="javascript:onSubmitButtonClick(); return false;">Call API</button>
+    <p>Messages sent <span id="messagesCounter">0</span> times.</p>
+    <p>Average request time <span id="requestTime">0</span>(ms)</p>
+    <p>Successful messages sent <span id="numberOfSuccessfulMessages">0</span></p>
+    <p>Unsuccessful messages sent <span id="numberOfFAiledMessages">0</span></p>
+
+    <h1 id="specialMessages" class="display-4"></h1>
+</div>
+<script src="~/js/site.js"></script>
