@@ -1,81 +1,85 @@
-﻿var sentCount = 0;
+﻿var numberOfRequestsSent = 0;
 var continuouslySendData = false;
-var apiRunningTotalTime = 0;
-var numberOfSuccessfulMessages = 0;
-var numberOfFailedMessages = 0;
+var apiTimeRunningTotal = 0;
+var numberOfSuccessfulResponses = 0;
+var numberOfFailedResponses = 0;
 
 onSubmitButtonClick = () => {
-    sentCount = 0;
-    continuouslySendData = true;
-    apiRunningTotalTime = 0;
-    numberOfSuccessfulMessages = 0;
-    numberOfFailedMessages = 0;
+  numberOfRequestsSent = 0;
+  continuouslySendData = true;
+  apiTimeRunningTotal = 0;
+  numberOfSuccessfulResponses = 0;
+  numberOfFailedResponses = 0;
 
-    document.getElementById("apiButton").textContent = "Reset Data";
-    ShowSpecialMessagesDialog("")
-    SendContinuousRequests();
-}
+  document.getElementById("apiButton").textContent = "Reset Data";
+  ShowSpecialMessagesDialog("");
+  SendContinuousRequests();
+};
 
 SendContinuousRequests = async () => {
+  while (continuouslySendData) {
+    const randomNumber = GenerateRandom8DigitRandomNumber();
 
-    while (continuouslySendData) {
-        const message = GenerateRandom8DigitRandomNumber();
-        try {
-            var startTime = performance.now()
-            const response = await fetch(`/api/Api/ping/${message}`, { method: 'GET' });
+    try {
+      var startTime = performance.now();
+      const response = await fetch(`/api/Api/ping/${randomNumber}`, {
+        method: "GET",
+      });
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data.message == message) {
-                    numberOfSuccessfulMessages++;
-                } else {
-                    numberOfFailedMessages++;
-                }
-
-            } else {
-                numberOfFailedMessages++;
-            }
-
-            var endTime = performance.now()
-            var currentAPItime = endTime - startTime;
-            apiRunningTotalTime += currentAPItime
-            sentCount++;
-            var average = apiRunningTotalTime / sentCount;
-
-            UpdateUI(average);
-
-        } catch (error) {
-            ShowSpecialMessagesDialog("Something Went Horribly Wrong: " + error)
+      if (response.ok) {
+        const data = await response.json();
+        if (data.message == randomNumber && data.response === "pong") {
+          numberOfSuccessfulResponses++;
+        } else {
+          numberOfFailedResponses++;
         }
+      } else {
+        numberOfFailedResponses++;
+      }
+
+      var endTime = performance.now();
+      var currentAPItime = endTime - startTime;
+      console.log(currentAPItime);
+      apiTimeRunningTotal += currentAPItime;
+      numberOfRequestsSent++;
+      var average = apiTimeRunningTotal / numberOfRequestsSent;
+
+      UpdateUI(average);
+    } catch (error) {
+      ShowSpecialMessagesDialog("Something Went Horribly Wrong: " + error);
     }
-}
+  }
+};
 
 GenerateRandom8DigitRandomNumber = () => {
-    const min = 10000000;
-    const max = 99999999;
+  const min = 10000000;
+  const max = 99999999;
 
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 UpdateUI = (average) => {
-    document.getElementById("messagesCounter").textContent = sentCount;
-    document.getElementById("requestTime").textContent = Math.round((average + Number.EPSILON) * 100) / 100;
-    document.getElementById("numberOfSuccessfulMessages").textContent = numberOfSuccessfulMessages;
-    document.getElementById("numberOfFAiledMessages").textContent = numberOfFailedMessages;
+  document.getElementById("apiCounter").textContent = numberOfRequestsSent;
+  document.getElementById("requestTime").textContent =
+    Math.round((average + Number.EPSILON) * 100) / 100;
+  document.getElementById("numberOfSuccessfulResponses").textContent =
+    numberOfSuccessfulResponses;
+  document.getElementById("numberOfFailedResponses").textContent =
+    numberOfFailedResponses;
 
-    ShowCompletelyIrrelevantMessages();
-}
+  ShowCompletelyIrrelevantMessages();
+};
 
 ShowCompletelyIrrelevantMessages = () => {
-    if (sentCount > 500) {
-        ShowSpecialMessagesDialog("Are you bored yet?")
-    }
+  if (numberOfRequestsSent > 500) {
+    ShowSpecialMessagesDialog("Are you bored yet?");
+  }
 
-    if (sentCount > 1000) {
-        ShowSpecialMessagesDialog("Yea, your're bored")
-    }
-}
+  if (numberOfRequestsSent > 1000) {
+    ShowSpecialMessagesDialog("Yea, your're bored");
+  }
+};
 
-ShowSpecialMessagesDialog = (message) => {
-    document.getElementById("specialMessages").textContent = message;
-}
+ShowSpecialMessagesDialog = (phrase) => {
+  document.getElementById("specialMessages").textContent = phrase;
+};

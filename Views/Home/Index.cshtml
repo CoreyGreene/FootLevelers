@@ -4,12 +4,12 @@
 
 <div class="text-center">
     <h1 class="display-4">API Practice Test</h1>
-    <p>Hit the Button below to punish this poor API Enpoint</p>
+    <p>Hit the button below to call the API endpoint continuously</p>
     <button id="apiButton" class="btn btn-primary" onclick="javascript:onSubmitButtonClick(); return false;">Call API</button>
-    <p>Messages sent <span id="messagesCounter">0</span> times.</p>
-    <p>Average request time <span id="requestTime">0</span>(ms)</p>
-    <p>Successful messages sent <span id="numberOfSuccessfulMessages">0</span></p>
-    <p>Unsuccessful messages sent <span id="numberOfFAiledMessages">0</span></p>
+    <p>Messages sent <span id="apiCounter">0</span> times.</p>
+    <p>Average request time in milliseconds <span id="requestTime" style="width: 10px; display: inline-block;">0</span></p>
+    <p>Successful messages sent <span id="numberOfSuccessfulResponses">0</span></p>
+    <p>Unsuccessful messages sent <span id="numberOfFailedResponses">0</span></p>
 
     <h1 id="specialMessages" class="display-4"></h1>
 </div>
