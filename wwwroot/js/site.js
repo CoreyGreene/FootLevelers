@@ -39,7 +39,6 @@ SendContinuousRequests = async () => {
 
       var endTime = performance.now();
       var currentAPItime = endTime - startTime;
-      console.log(currentAPItime);
       apiTimeRunningTotal += currentAPItime;
       numberOfRequestsSent++;
       var average = apiTimeRunningTotal / numberOfRequestsSent;
